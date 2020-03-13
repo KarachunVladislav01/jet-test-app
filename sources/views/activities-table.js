@@ -1,5 +1,6 @@
 import { JetView } from "webix-jet";
 import { activities } from "../models/activities.js";
+import { activityType } from "../models/activityType.js";
 
 export default class Activities extends JetView {
 	config() {
@@ -9,12 +10,16 @@ export default class Activities extends JetView {
 			fillspace: true,
 			hover: "row--hover",
 			data: activities,
+			scheme: {
+				$init: function(obj) {}
+			},
 			columns: [
 				{ id: "id", header: "", sort: "int", width: 40, css: "column--id" },
 				{
 					id: "TypeID",
 					header: [{ text: "Activity type" }, { content: "selectFilter" }],
 					sort: "string",
+					collection: activityType,
 					adjust: true
 				},
 				{

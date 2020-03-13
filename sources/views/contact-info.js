@@ -11,8 +11,18 @@ export default class ContactInfo extends JetView {
 			]
 		};
 		const userInfo = {
+			id: "userInfo",
 			rows: [
-				{ cols: [{ template: "Name Surname", css: "contact-info--name" }, formButtons] },
+				{
+					cols: [
+						{
+							template: "#FirstName# #Surname#",
+							css: "contact-info--name",
+							name: "FirstName"
+						},
+						formButtons
+					]
+				},
 				{
 					cols: [
 						{
@@ -45,12 +55,14 @@ export default class ContactInfo extends JetView {
 		return view;
 	}
 
-	init() {}
+	init() {
+		this.info = this.$$("userInfo");
+	}
 	urlChange(view, url) {
-		// const elementId = url[0].params.id;
-		// if (contacts.exists(elementId)) {
-		// 	this.form.setValues(contacts.getItem(elementId));
-		// }
+		const elementId = url[0].params.id;
+		if (contacts.exists(elementId)) {
+			this.info.setValues(contacts.getItem(elementId));
+		}
 	}
 	saveContact() {
 		const data = this.form.getValues();
