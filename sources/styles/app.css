@@ -31,7 +31,7 @@
 	border-radius: 0.4rem;
 }
 
-.contact-info--name .webix_template {
+.contact-info--name {
 	display: grid;
 	align-items: center;
 	font-size: 2rem;
@@ -39,4 +39,19 @@
 
 .row--hover {
 	background-color: rgba(152, 247, 222, 0.15);
+}
+
+.user-info-grid {
+	display: grid;
+	grid-template-rows: 4rem 3fr 0.5fr;
+}
+
+.user-info-body-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.user-info--status {
+	margin-left: 2rem;
+	text-align: end;
 }

@@ -1,5 +1,6 @@
 import { JetView } from "webix-jet";
-import { contacts } from "models/contacts.js";
+import { contacts } from "../models/contacts.js";
+import { statuses } from "../models/statuses.js";
 
 export default class ContactInfo extends JetView {
 	config() {
@@ -11,46 +12,50 @@ export default class ContactInfo extends JetView {
 			]
 		};
 		const userInfo = {
-			id: "userInfo",
-			rows: [
-				{
-					cols: [
-						{
-							template: "#FirstName# #Surname#",
-							css: "contact-info--name",
-							name: "FirstName"
-						},
-						formButtons
-					]
-				},
-				{
-					cols: [
-						{
-							template: function(obj) {
-								return '<img src="' + obj.src + '"/>';
-							},
-							borderless: true,
-							data: { title: "placeholder", src: "./sources/assets/img/150.png" }
-						},
-						{
-							view: "template",
-							css: "user-info--col1",
-							template: "html->user-info--col1",
-							borderless: true
-						},
-						{
-							view: "template",
-							template: "html->user-info--col2",
-							borderless: true,
-							height: 200
-						}
-					]
-				},
-				{ template: "Status", borderless: true, height: 40 }
-			]
+			view: "template",
+			localId: "userInfo",
+			template: contact => {
+				return `
+			<div class="user-info-grid">
+			<div class ="contact-info--name">${contact.FirstName} ${contact.LastName}</div>
+			<div class = "user-info-body-grid">
+				<div><img src="./sources/assets/img/150.png" alt="User photo" /></div>
+				<div class="user-info--col">
+					<div id="user-mail">
+						<span class="webix_icon wxi-user"></span>
+						<span>${contact.Email || "no data"}</span>
+					</div>
+					<div id="user-skype">
+						<span class="webix_icon wxi-user"></span>
+						<span>${contact.Skype || "no data"}</span>
+					</div>
+					<div id="user-job">
+						<span class="webix_icon wxi-user"></span>
+						<span>${contact.Job || "no data"}</span>
+					</div>
+					<div id="user-company">
+						<span class="webix_icon wxi-user"></span>
+						<span>${contact.Company || "no data"}</span>
+					</div>
+				</div>
+				<div class="user-info--col">
+					<div id="user-birth">
+						<span class="webix_icon wxi-user"></span>
+						<span>${contact.Birthday || "no data"}</span>
+					</div>
+					<div id="user-location">
+						<span class="webix_icon wxi-user"></span>
+						<span>${contact.Address || "no data"}</span>
+					</div>
+				</div>
+			</div>
+			<div><span class="user-info--status">${contact.Status || "no data"}</span></div>
+		</div>
+		</div>`;
+			}
 		};
 
-		const view = { rows: [userInfo, {}] };
+		const view = userInfo;
 
 		return view;
 	}
@@ -60,22 +65,18 @@ export default class ContactInfo extends JetView {
 	}
 	urlChange(view, url) {
 		const elementId = url[0].params.id;
-		if (contacts.exists(elementId)) {
-			this.info.setValues(contacts.getItem(elementId));
-		}
+
+		statuses.waitData.then(() => {
+			if (contacts.exists(elementId)) {
+				const contact = contacts.getItem(elementId);
+				const statusId = contact.StatusID;
+
+				if (statuses.exists(statusId)) {
+					contact.Status = statuses.getItem(statusId).Value;
+				}
+				this.info.setValues(contact);
+			}
+		});
 	}
-	saveContact() {
-		const data = this.form.getValues();
-		let id = this.getParam("id");
-		if (!id) {
-			webix.message({ type: "error", text: "No contact selected" });
-			return;
-		}
-		if (this.form.validate()) {
-			contacts.updateItem(data.id, data);
-			webix.message({ type: "success", text: "Successful" });
-		} else {
-			webix.message({ type: "error", text: "Invalid inputs" });
-		}
-	}
+	saveContact() {}
 }

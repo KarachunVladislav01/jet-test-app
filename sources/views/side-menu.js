@@ -14,8 +14,7 @@ export default class SideMenu extends JetView {
 			css: "app_menu",
 			width: 180,
 			select: true,
-			fillspace: true,
-			height: 500,
+			layout: "y",
 			template: "<span class='webix_icon #icon#'></span> #value# ",
 			type: { width: 160 },
 			data: [

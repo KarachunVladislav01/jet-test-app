@@ -21,9 +21,6 @@ export default class Contact extends JetView {
 				userCompany: obj => {
 					return `<span>${obj.Company}</span>`;
 				}
-			},
-			onClick: {
-				"wxi-close": (e, id) => this.deleteContact(id)
 			}
 		};
 
@@ -48,6 +45,4 @@ export default class Contact extends JetView {
 			this.list.select(id);
 		});
 	}
-
-	deleteContact(id) {}
 }

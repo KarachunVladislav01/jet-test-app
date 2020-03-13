@@ -11,7 +11,9 @@ export default class Activities extends JetView {
 			hover: "row--hover",
 			data: activities,
 			scheme: {
-				$init: function(obj) {}
+				$init: function(obj) {
+					obj.TypeID = activityType.getItem(obj.TypeID);
+				}
 			},
 			columns: [
 				{ id: "id", header: "", sort: "int", width: 40, css: "column--id" },
@@ -55,5 +57,11 @@ export default class Activities extends JetView {
 		};
 
 		return dataTable;
+	}
+	init() {
+		this.table = this.$$("activitiesTable");
+	}
+	urlChange(view, url) {
+		const elementId = url[0].params.id;
 	}
 }
