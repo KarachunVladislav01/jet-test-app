@@ -32,8 +32,7 @@ export default class SideMenu extends JetView {
 				header,
 				{
 					cols: [
-						{ rows: [sideMenu, {}] },
-
+						sideMenu,
 						{ type: "wide", paddingY: 10, paddingX: 5, rows: [{ $subview: true }] }
 					]
 				}

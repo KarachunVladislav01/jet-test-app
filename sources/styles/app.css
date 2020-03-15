@@ -1,34 +1,43 @@
-.webixappstart {
-	opacity: 0;
-}
-.webixapp {
-	transition: opacity 500ms;
-	opacity: 1;
-}
-
-.app_header .webix_header {
-	text-align: center;
-}
-.app_layout .webix_layout_clean {
-	background: #ebedf0;
-}
-.app_menu .webix_icon {
-	font-size: 20px;
-	vertical-align: middle;
+* {
+	margin: 0;
+	padding: 0;
+	margin-block-start: 0;
+	margin-block-end: 0;
 }
 
-.users-list--flex {
-	height: 4rem;
+html {
+	font-size: 10px;
+}
+
+body {
+	font-size: 1.6rem;
+}
+
+.user-list--grid {
+	display: grid;
+	grid-template-columns: 1fr 4fr;
+	align-items: flex-end;
+	justify-items: center;
+	margin: 1rem 0 1rem 0;
+}
+
+.user-list--grid img {
+	display: grid;
+	align-self: flex-end;
+	margin: auto;
+	height: 6rem;
+	border-radius: 2rem;
 }
 
 .user-info--col {
 	display: grid;
 	margin-top: 1rem;
-	grid-template-rows: repeat(4, 2rem);
+	grid-template-rows: repeat(4, 1fr);
 	align-items: center;
 }
-.contact-button .webix_button {
+.button--style .webix_button {
 	border-radius: 0.4rem;
+	background-color: #fff;
 }
 
 .contact-info--name {
@@ -48,7 +57,11 @@
 
 .user-info-body-grid {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: repeat(2, 20rem) 1fr;
+}
+
+.user-info-photo img {
+	height: 18rem;
 }
 
 .user-info--status {

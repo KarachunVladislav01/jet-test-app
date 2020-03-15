@@ -9,18 +9,19 @@ export default class Contact extends JetView {
 		const usersList = {
 			view: "list",
 			localId: "userList",
+			width: 300,
 			select: true,
 			scroll: false,
-			template:
-				"<div class= 'users-list--flex'>{common.userName()}<br>{common.userCompany()} </div>",
+			template: obj => {
+				return `
+						<div class="user-list--grid">
+							<div class="user-list-photo"><img src=${obj.Photo} alt="User photo" /></div>
+							<div><span>${obj.value}</span><br /><span>${obj.Company}</span></div>
+						</div>
+						`;
+			},
 			type: {
-				height: 64,
-				userName: obj => {
-					return `<span>${obj.FirstName} ${obj.LastName}</span>`;
-				},
-				userCompany: obj => {
-					return `<span>${obj.Company}</span>`;
-				}
+				height: 100
 			}
 		};
 

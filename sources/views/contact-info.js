@@ -7,44 +7,45 @@ export default class ContactInfo extends JetView {
 		const _ = this.app.getService("locale")._;
 		const formButtons = {
 			cols: [
-				{ view: "button", label: _("Delete"), css: "contact-button" },
-				{ view: "button", label: _("Edit"), css: "contact-button" }
+				{ view: "button", label: _("Delete"), css: "button--style" },
+				{ view: "button", label: _("Edit"), css: "button--style" }
 			]
 		};
 		const userInfo = {
 			view: "template",
 			localId: "userInfo",
+			fillspace: true,
 			template: contact => {
 				return `
 			<div class="user-info-grid">
 			<div class ="contact-info--name">${contact.FirstName} ${contact.LastName}</div>
 			<div class = "user-info-body-grid">
-				<div><img src="./sources/assets/img/150.png" alt="User photo" /></div>
+				<div class="user-info-photo"><img src=${contact.Photo} alt="User photo" /></div>
 				<div class="user-info--col">
 					<div id="user-mail">
-						<span class="webix_icon wxi-user"></span>
+						<span class="webix_icon mdi mdi-email"></span>
 						<span>${contact.Email || "no data"}</span>
 					</div>
 					<div id="user-skype">
-						<span class="webix_icon wxi-user"></span>
+						<span class="webix_icon mdi mdi-skype"></span>
 						<span>${contact.Skype || "no data"}</span>
 					</div>
 					<div id="user-job">
-						<span class="webix_icon wxi-user"></span>
+						<span class="webix_icon mdi mdi-account-card-details"></span>
 						<span>${contact.Job || "no data"}</span>
 					</div>
 					<div id="user-company">
-						<span class="webix_icon wxi-user"></span>
+						<span class="webix_icon mdi mdi-briefcase"></span>
 						<span>${contact.Company || "no data"}</span>
 					</div>
 				</div>
 				<div class="user-info--col">
 					<div id="user-birth">
-						<span class="webix_icon wxi-user"></span>
+						<span class="webix_icon mdi mdi-calendar"></span>
 						<span>${contact.Birthday || "no data"}</span>
 					</div>
 					<div id="user-location">
-						<span class="webix_icon wxi-user"></span>
+						<span class="webix_icon mdi mdi-city"></span>
 						<span>${contact.Address || "no data"}</span>
 					</div>
 				</div>
@@ -55,7 +56,7 @@ export default class ContactInfo extends JetView {
 			}
 		};
 
-		const view = userInfo;
+		const view = { rows: [formButtons, userInfo] };
 
 		return view;
 	}
