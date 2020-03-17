@@ -19,20 +19,38 @@ export default class ActivityWindow extends JetView {
 				localId: "activityForm",
 				elements: [
 					{ view: "textarea", label: "Details", name: "Details" },
-					{ view: "combo", label: "Type", name: "TypeID", options: activityType },
-					{ view: "combo", label: "Contact", name: "ContactID", options: contacts },
+					{
+						view: "combo",
+						label: "Type",
+						name: "TypeID",
+						options: activityType,
+						validate: webix.rules.isNotEmpty,
+						invalidMessage: "Can not be empty"
+					},
+					{
+						view: "combo",
+						label: "Contact",
+						name: "ContactID",
+						options: contacts,
+						validate: webix.rules.isNotEmpty,
+						invalidMessage: "Can not be empty"
+					},
 					{
 						cols: [
 							{
 								view: "datepicker",
 								name: "DueDate",
-								format: webix.i18n.longDateFormatStr
+								format: webix.i18n.longDateFormatStr,
+								validate: webix.rules.isNotEmpty,
+								invalidMessage: "Can not be empty"
 							},
 							{
 								view: "datepicker",
 								name: "DueTime",
 								type: "time",
-								format: webix.i18n.timeFormat
+								format: webix.i18n.timeFormat,
+								validate: webix.rules.isNotEmpty,
+								invalidMessage: "Can not be empty"
 							}
 						]
 					},
@@ -94,6 +112,11 @@ export default class ActivityWindow extends JetView {
 
 	addEditActivity() {
 		const data = this.form.getValues();
+		if (!this.form.validate()) {
+			webix.message({ type: "error", text: "Please check fields" });
+			return;
+		}
+
 		if (data.id) {
 			activities.updateItem(data.id, data);
 		} else {
