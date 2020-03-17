@@ -2,6 +2,7 @@ import { JetView } from "webix-jet";
 import { contacts } from "../models/contacts.js";
 
 import ContactInfo from "./contact-info.js";
+import noPhoto from "../assets/img/noPhoto.png";
 
 export default class Contact extends JetView {
 	config() {
@@ -15,7 +16,7 @@ export default class Contact extends JetView {
 			template: obj => {
 				return `
 						<div class="user-list--grid">
-							<div class="user-list-photo"><img src=${obj.Photo} alt="User photo" /></div>
+							<div class="user-list-photo"><img src=${obj.Photo || noPhoto} alt="User photo" /></div>
 							<div><span>${obj.value}</span><br /><span>${obj.Company}</span></div>
 						</div>
 						`;

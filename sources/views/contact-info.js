@@ -1,6 +1,7 @@
 import { JetView } from "webix-jet";
 import { contacts } from "../models/contacts.js";
 import { statuses } from "../models/statuses.js";
+import noPhoto from "../assets/img/noPhoto.png";
 
 export default class ContactInfo extends JetView {
 	config() {
@@ -19,7 +20,7 @@ export default class ContactInfo extends JetView {
 			<div class="user-info-grid">
 			<div class ="contact-info--name">${contact.FirstName} ${contact.LastName}</div>
 			<div class = "user-info-body-grid">
-				<div class="user-info-photo"><img src=${contact.Photo} alt="User photo" /></div>
+				<div class="user-info-photo"><img src=${contact.Photo || noPhoto} alt="User photo" /></div>
 				<div class="user-info--col">
 					<div id="user-mail">
 						<span class="webix_icon mdi mdi-email"></span>

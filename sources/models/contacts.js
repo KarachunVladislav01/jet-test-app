@@ -4,9 +4,6 @@ export const contacts = new webix.DataCollection({
 	scheme: {
 		$init: obj => {
 			obj.value = `${obj.FirstName}, ${obj.LastName}`;
-			if (!obj.Photo) {
-				obj.Photo = "https://i.imgur.com/lkxVIue.png";
-			}
 		}
 	}
 });
