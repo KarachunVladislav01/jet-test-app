@@ -10,9 +10,9 @@ export const activities = new webix.DataCollection({
 			}
 		},
 		$update: item => {
-			const dateToStrDate = webix.Date.dateToStr("%Y-%m-%d");
-			const dateToStrTime = webix.Date.dateToStr("%H:%i");
-			item.DueDate = `${dateToStrDate(item.DueDate)} ${dateToStrTime(item.DueTime)}`;
+			const hours = item.DueTime.getHours();
+			const minutes = item.DueTime.getMinutes();
+			item.DueDate.setHours(hours, minutes);
 		},
 		$save: item => {
 			if (item.DueDate) {
