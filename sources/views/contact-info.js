@@ -14,7 +14,6 @@ export default class ContactInfo extends JetView {
 		const userInfo = {
 			view: "template",
 			localId: "userInfo",
-			fillspace: true,
 			template: contact => {
 				return `
 			<div class="user-info-grid">
@@ -65,11 +64,11 @@ export default class ContactInfo extends JetView {
 		this.info = this.$$("userInfo");
 	}
 	urlChange(view, url) {
-		const elementId = url[0].params.id;
+		const elementId = this.getParam("id");
 
 		statuses.waitData.then(() => {
 			if (contacts.exists(elementId)) {
-				const contact = contacts.getItem(elementId);
+				const contact = webix.copy(contacts.getItem(elementId));
 				const statusId = contact.StatusID;
 
 				if (statuses.exists(statusId)) {
@@ -79,5 +78,4 @@ export default class ContactInfo extends JetView {
 			}
 		});
 	}
-	saveContact() {}
 }

@@ -24,7 +24,7 @@ export default class Activities extends JetView {
 				{
 					id: "TypeID",
 					header: [{ text: "Activity type" }, { content: "selectFilter" }],
-					sort: "string",
+					sort: "text",
 					collection: activityType,
 					adjust: true
 				},
@@ -44,7 +44,7 @@ export default class Activities extends JetView {
 							}
 						}
 					],
-					sort: "text",
+					sort: "date",
 					format: webix.i18n.longDateFormatStr,
 					adjust: true
 				},
@@ -58,7 +58,7 @@ export default class Activities extends JetView {
 				{
 					id: "ContactID",
 					header: [{ text: "Contact" }, { content: "selectFilter" }],
-					sort: "string",
+					sort: "text",
 					collection: contacts,
 					adjust: true
 				},
@@ -102,15 +102,12 @@ export default class Activities extends JetView {
 	}
 	init() {
 		this.table = this.$$("activitiesTable");
+		this.activityWindow = this.ui(ActivityWindow);
 		webix.promise
 			.all([activities.waitData, activityType.waitData, contacts.waitData])
 			.then(() => {
 				this.table.sync(activities);
-				this.activityWindow = this.ui(ActivityWindow);
 			});
-	}
-	urlChange(view, url) {
-		const elementId = url[0].params.id;
 	}
 
 	showEditModal(id) {

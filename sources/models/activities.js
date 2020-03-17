@@ -3,8 +3,15 @@ export const activities = new webix.DataCollection({
 	save: "rest->http://localhost:8096/api/v1/activities/",
 	scheme: {
 		$init(item) {
-			item.DueDate = webix.i18n.parseFormatDate(item.DueDate);
-			item.DueTime = webix.Date.timePart(item.DueDate);
+			if (item.DueDate) {
+				item.DueDate = webix.i18n.parseFormatDate(item.DueDate);
+				item.DueTime = webix.Date.timePart(item.DueDate);
+			}
+		},
+		$save: item => {
+			if (item.DueDate) {
+				item.DueDate = webix.i18n.parseFormatStr(item.DueDate);
+			}
 		}
 	}
 });

@@ -98,7 +98,6 @@ export default class ActivityWindow extends JetView {
 		const dateToStrTime = webix.Date.dateToStr("%H:%i");
 		data.DueDate = `${dateToStrDate(data.DueDate)} ${dateToStrTime(data.DueTime)}`;
 		if (data.id) {
-			console.log(data);
 			activities.updateItem(data.id, data);
 		} else {
 			activities.add(data, 0);
