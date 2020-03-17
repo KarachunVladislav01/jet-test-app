@@ -5,7 +5,6 @@ export const activities = new webix.DataCollection({
 		$init(item) {
 			if (item.DueDate) {
 				item.DueDate = webix.i18n.parseFormatDate(item.DueDate);
-				item.DueTime = webix.Date.timePart(item.DueDate);
 			}
 		},
 		$save: item => {

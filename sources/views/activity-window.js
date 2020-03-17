@@ -74,7 +74,8 @@ export default class ActivityWindow extends JetView {
 		let state;
 		if (id && activities.exists(id)) {
 			state = "Edit";
-			const item = activities.getItem(id);
+			const item = webix.copy(activities.getItem(id));
+			item.DueTime = item.DueDate;
 			this.form.setValues(item);
 		} else {
 			state = "Add";
@@ -87,7 +88,6 @@ export default class ActivityWindow extends JetView {
 
 	closeModalWindow() {
 		this.getRoot().hide();
-		this.show("./activities-table");
 		this.form.clear();
 		this.form.clearValidation();
 	}

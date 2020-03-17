@@ -9,7 +9,7 @@ export default class Activities extends JetView {
 	config() {
 		const dataTable = {
 			view: "datatable",
-			id: "activitiesTable",
+			localId: "activitiesTable",
 			fillspace: true,
 			hover: "row--hover",
 			columns: [
