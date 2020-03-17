@@ -94,9 +94,6 @@ export default class ActivityWindow extends JetView {
 
 	addEditActivity() {
 		const data = this.form.getValues();
-		const dateToStrDate = webix.Date.dateToStr("%Y-%m-%d");
-		const dateToStrTime = webix.Date.dateToStr("%H:%i");
-		data.DueDate = `${dateToStrDate(data.DueDate)} ${dateToStrTime(data.DueTime)}`;
 		if (data.id) {
 			activities.updateItem(data.id, data);
 		} else {

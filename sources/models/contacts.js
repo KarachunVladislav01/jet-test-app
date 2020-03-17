@@ -5,7 +5,7 @@ export const contacts = new webix.DataCollection({
 		$init: obj => {
 			obj.value = `${obj.FirstName}, ${obj.LastName}`;
 			if (!obj.Photo) {
-				obj.Photo = "./sources/assets/img/noPhoto.png";
+				obj.Photo = "https://i.imgur.com/lkxVIue.png";
 			}
 		}
 	}
