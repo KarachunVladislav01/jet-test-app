@@ -10,7 +10,11 @@ export const activities = new webix.DataCollection({
 	save: "rest->http://localhost:8096/api/v1/activities/",
 	scheme: {
 		$init(item) {
-			if (item.DueDate) {
+			const date = item.DueDate;
+			if (!date) {
+				return;
+			}
+			if (typeof date !== "object") {
 				item.DueDate = webix.i18n.parseFormatDate(item.DueDate);
 			}
 			if (item.DueTime) {
