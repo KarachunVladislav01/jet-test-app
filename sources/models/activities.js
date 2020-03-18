@@ -16,8 +16,7 @@ export const activities = new webix.DataCollection({
 			}
 			if (typeof date !== "object") {
 				item.DueDate = webix.i18n.parseFormatDate(item.DueDate);
-			}
-			if (item.DueTime) {
+			} else if (item.DueTime) {
 				setTime(item);
 			}
 		},
