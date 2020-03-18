@@ -21,7 +21,9 @@ export const activities = new webix.DataCollection({
 			}
 		},
 		$update: item => {
-			setTime(item);
+			if (item.DueTime) {
+				setTime(item);
+			}
 		},
 		$save: item => {
 			if (item.DueDate) {
