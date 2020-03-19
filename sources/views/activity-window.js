@@ -1,7 +1,7 @@
-import { JetView } from "webix-jet";
-import { activities } from "../models/activities.js";
-import { activityType } from "../models/activityType.js";
-import { contacts } from "../models/contacts.js";
+import {JetView} from "webix-jet";
+import {activities} from "../models/activities";
+import {activityType} from "../models/activityType";
+import {contacts} from "../models/contacts";
 
 export default class ActivityWindow extends JetView {
 	config() {
@@ -18,7 +18,7 @@ export default class ActivityWindow extends JetView {
 				view: "form",
 				localId: "activityForm",
 				elements: [
-					{ view: "textarea", label: "Details", name: "Details" },
+					{view: "textarea", label: "Details", name: "Details"},
 					{
 						view: "combo",
 						label: "Type",
@@ -88,6 +88,7 @@ export default class ActivityWindow extends JetView {
 	init() {
 		this.form = this.$$("activityForm");
 	}
+
 	showModalWindow(id) {
 		let state;
 		if (id && activities.exists(id)) {
@@ -95,10 +96,11 @@ export default class ActivityWindow extends JetView {
 			const item = webix.copy(activities.getItem(id));
 			item.DueTime = item.DueDate;
 			this.form.setValues(item);
-		} else {
+		}
+		else {
 			state = "Add";
 		}
-		this.$$("header").setValues({ state });
+		this.$$("header").setValues({state});
 		this.$$("actionsButton").setValue(state);
 
 		this.getRoot().show();
@@ -113,13 +115,14 @@ export default class ActivityWindow extends JetView {
 	addEditActivity() {
 		const data = this.form.getValues();
 		if (!this.form.validate()) {
-			webix.message({ type: "error", text: "Please check fields" });
+			webix.message({type: "error", text: "Please check fields"});
 			return;
 		}
 
 		if (data.id) {
 			activities.updateItem(data.id, data);
-		} else {
+		}
+		else {
 			activities.add(data, 0);
 		}
 		this.closeModalWindow();

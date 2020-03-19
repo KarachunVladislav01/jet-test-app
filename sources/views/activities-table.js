@@ -1,9 +1,9 @@
-import { JetView } from "webix-jet";
-import { activities } from "../models/activities.js";
-import { activityType } from "../models/activityType.js";
-import { contacts } from "../models/contacts.js";
+import {JetView} from "webix-jet";
+import {activities} from "../models/activities";
+import {activityType} from "../models/activityType";
+import {contacts} from "../models/contacts";
 
-import ActivityWindow from "./activity-window.js";
+import ActivityWindow from "./activity-window";
 
 export default class Activities extends JetView {
 	config() {
@@ -23,7 +23,7 @@ export default class Activities extends JetView {
 				},
 				{
 					id: "TypeID",
-					header: [{ text: "Activity type" }, { content: "selectFilter" }],
+					header: [{text: "Activity type"}, {content: "selectFilter"}],
 					sort: "text",
 					collection: activityType,
 					adjust: true
@@ -31,7 +31,7 @@ export default class Activities extends JetView {
 				{
 					id: "DueDate",
 					header: [
-						{ text: "Due date" },
+						{text: "Due date"},
 						{
 							content: "datepickerFilter",
 							compare(cellValue, filterValue) {
@@ -50,14 +50,14 @@ export default class Activities extends JetView {
 				},
 				{
 					id: "Details",
-					header: [{ text: "Details" }, { content: "textFilter" }],
+					header: [{text: "Details"}, {content: "textFilter"}],
 					sort: "string",
 					adjust: true,
 					fillspace: true
 				},
 				{
 					id: "ContactID",
-					header: [{ text: "Contact" }, { content: "selectFilter" }],
+					header: [{text: "Contact"}, {content: "selectFilter"}],
 					sort: "text",
 					collection: contacts,
 					adjust: true
@@ -100,14 +100,13 @@ export default class Activities extends JetView {
 
 		return view;
 	}
+
 	init() {
 		this.table = this.$$("activitiesTable");
 		this.activityWindow = this.ui(ActivityWindow);
-		webix.promise
-			.all([activities.waitData, activityType.waitData, contacts.waitData])
-			.then(() => {
-				this.table.sync(activities);
-			});
+		webix.promise.all([activities.waitData, activityType.waitData, contacts.waitData]).then(() => {
+			this.table.sync(activities);
+		});
 	}
 
 	showEditModal(id) {

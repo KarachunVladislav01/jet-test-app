@@ -1,6 +1,6 @@
-import { JetView } from "webix-jet";
-import { contacts } from "../models/contacts.js";
-import { statuses } from "../models/statuses.js";
+import {JetView} from "webix-jet";
+import {contacts} from "../models/contacts";
+import {statuses} from "../models/statuses";
 import noPhoto from "../assets/img/noPhoto.png";
 
 export default class ContactInfo extends JetView {
@@ -8,15 +8,14 @@ export default class ContactInfo extends JetView {
 		const _ = this.app.getService("locale")._;
 		const formButtons = {
 			cols: [
-				{ view: "button", label: _("Delete"), css: "button--style" },
-				{ view: "button", label: _("Edit"), css: "button--style" }
+				{view: "button", label: _("Delete"), css: "button--style"},
+				{view: "button", label: _("Edit"), css: "button--style"}
 			]
 		};
 		const userInfo = {
 			view: "template",
 			localId: "userInfo",
-			template: contact => {
-				return `
+			template: contact => `
 			<div class="user-info-grid">
 			<div class ="contact-info--name">${contact.FirstName} ${contact.LastName}</div>
 			<div class = "user-info-body-grid">
@@ -52,11 +51,10 @@ export default class ContactInfo extends JetView {
 			</div>
 			<div><span class="user-info--status">${contact.Status || "no data"}</span></div>
 		</div>
-		</div>`;
-			}
+		</div>`
 		};
 
-		const view = { rows: [formButtons, userInfo] };
+		const view = {rows: [formButtons, userInfo]};
 
 		return view;
 	}
@@ -64,7 +62,8 @@ export default class ContactInfo extends JetView {
 	init() {
 		this.info = this.$$("userInfo");
 	}
-	urlChange(view, url) {
+
+	urlChange() {
 		const elementId = this.getParam("id");
 
 		statuses.waitData.then(() => {

@@ -1,26 +1,23 @@
-import { JetView } from "webix-jet";
-import { contacts } from "../models/contacts.js";
+import {JetView} from "webix-jet";
+import {contacts} from "../models/contacts";
 
-import ContactInfo from "./contact-info.js";
+import ContactInfo from "./contact-info";
 import noPhoto from "../assets/img/noPhoto.png";
 
 export default class Contact extends JetView {
 	config() {
-		const _ = this.app.getService("locale")._;
 		const usersList = {
 			view: "list",
 			localId: "userList",
 			width: 300,
 			select: true,
 			scroll: false,
-			template: obj => {
-				return `
+			template: obj => `
 						<div class="user-list--grid">
 							<div class="user-list-photo"><img src=${obj.Photo || noPhoto} alt="User photo" /></div>
 							<div><span>${obj.value}</span><br /><span>${obj.Company}</span></div>
 						</div>
-						`;
-			},
+						`,
 			type: {
 				height: 100
 			}
@@ -32,7 +29,8 @@ export default class Contact extends JetView {
 		};
 		return view;
 	}
-	init(view, url) {
+
+	init() {
 		this.list = this.$$("userList");
 		this.list.sync(contacts);
 		this.list.attachEvent("onAfterSelect", chosenId => this.show(`./contacts?id=${chosenId}`));
