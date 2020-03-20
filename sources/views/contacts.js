@@ -1,7 +1,6 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../models/contacts";
 
-import ContactInfo from "./contact-info";
 import noPhoto from "../assets/img/noPhoto.png";
 
 export default class Contact extends JetView {
@@ -25,7 +24,7 @@ export default class Contact extends JetView {
 
 		const view = {
 			margin: 20,
-			cols: [usersList, ContactInfo]
+			cols: [usersList, {$subview: true}]
 		};
 		return view;
 	}
@@ -33,13 +32,14 @@ export default class Contact extends JetView {
 	init() {
 		this.list = this.$$("userList");
 		this.list.sync(contacts);
-		this.list.attachEvent("onAfterSelect", chosenId => this.show(`./contacts?id=${chosenId}`));
+		this.list.attachEvent("onAfterSelect", chosenId => this.setParam("id", chosenId, true));
 		contacts.waitData.then(() => {
 			let id = this.getParam("id");
 			if (!contacts.exists(id)) {
 				id = contacts.getFirstId();
 			}
 			this.list.select(id);
+			this.show("./contact-info");
 		});
 	}
 }

@@ -1,6 +1,8 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../models/contacts";
 import {statuses} from "../models/statuses";
+
+import ContactForm from "./contact-form";
 import noPhoto from "../assets/img/noPhoto.png";
 
 export default class ContactInfo extends JetView {
@@ -9,7 +11,12 @@ export default class ContactInfo extends JetView {
 		const formButtons = {
 			cols: [
 				{view: "button", label: _("Delete"), css: "button--style"},
-				{view: "button", label: _("Edit"), css: "button--style"}
+				{
+					view: "button",
+					label: _("Edit"),
+					css: "button--style",
+					click: () => this.showContactEdit()
+				}
 			]
 		};
 		const userInfo = {
@@ -61,10 +68,17 @@ export default class ContactInfo extends JetView {
 
 	init() {
 		this.info = this.$$("userInfo");
+		this.contactForm = this.ui(ContactForm);
+	}
+
+	showContactEdit() {
+		const id = this.getParam("id", true);
+		// this.show("./contact-form");
+		this.contactForm.showContactForm(id);
 	}
 
 	urlChange() {
-		const elementId = this.getParam("id");
+		const elementId = this.getParam("id", true);
 
 		statuses.waitData.then(() => {
 			if (contacts.exists(elementId)) {

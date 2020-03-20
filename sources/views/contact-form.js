@@ -1,5 +1,6 @@
 import {JetView} from "webix-jet";
 import {statuses} from "../models/statuses";
+import {contacts} from "../models/contacts";
 
 import noPhoto from "../assets/img/noPhoto.png";
 
@@ -10,7 +11,8 @@ export default class ContactForm extends JetView {
 			localId: "contactForm",
 			elements: [
 				{
-					view: "label",
+					view: "template",
+					localId: "header",
 					template: "#state# activity"
 				},
 				{
@@ -143,10 +145,10 @@ export default class ContactForm extends JetView {
 				{},
 				{
 					cols: [
-						{view: "button", label: "Cancel", css: "button--style"},
+						{view: "button", label: "Cancel", css: "button--style", click: () => this.closeForm()},
 						{
 							view: "button",
-							label: "Delete photo",
+							label: "",
 							css: "button--style",
 							localId: "actionsButton"
 						}
@@ -155,5 +157,45 @@ export default class ContactForm extends JetView {
 			]
 		};
 		return form;
+	}
+
+	init() {
+		this.form = this.$$("contactForm");
+	}
+
+	showContactForm(id) {
+		const self = this;
+		this.show("./contact-form").then(() => {
+			let state;
+			if (id && contacts.exists(id)) {
+				state = "Edit";
+				const item = webix.copy(contacts.getItem(id));
+				self.form.setValues(item);
+			}
+			else {
+				state = "Add";
+			}
+			self.$$("header").setValues({state});
+			self.$$("actionsButton").setValue(state);
+		});
+		// function asd() {
+		// 	let state;
+		// 	debugger;
+		// 	if (id && contacts.exists(id)) {
+		// 		state = "Edit";
+		// 		const item = webix.copy(contacts.getItem(id));
+		// 		this.form.setValues([item]);
+		// 	} else {
+		// 		state = "Add";
+		// 	}
+		// 	self.$$("header").setValues({state});
+		// 	self.$$("actionsButton").setValue(state);
+		// }
+	}
+
+	closeForm() {
+		this.form.clear();
+		this.form.clearValidation();
+		this.show("./contact-info");
 	}
 }
