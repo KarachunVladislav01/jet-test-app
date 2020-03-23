@@ -13,6 +13,8 @@ export default class ContactForm extends JetView {
 				{
 					view: "template",
 					localId: "header",
+					height: 70,
+					borderless: true,
 					template: "#state# activity"
 				},
 				{
@@ -117,22 +119,29 @@ export default class ContactForm extends JetView {
 									cols: [
 										{
 											type: "clean",
+											localId: "contactPhoto",
 											name: "Photo",
+											height: 200,
+											gravity: 2,
 											template: contact => `<div class="user-info-photo">
-											<img src=${contact.Photo || noPhoto} alt="User photo" /></div>`,
-											localId: "contactPhoto"
+											<img src=${contact.Photo || noPhoto} alt="User photo" /></div>`
 										},
 										{
 											rows: [
+												{},
 												{
-													view: "button",
+													view: "uploader",
+													localId: "photoUploader",
 													label: "Change photo",
+													accept: "image/png, image/jpg, image/jpeg",
+													autosend: false,
 													css: "button--style"
 												},
 												{
 													view: "button",
 													label: "Delete photo",
-													css: "button--style"
+													css: "button--style",
+													click: () => this.deletePhoto()
 												}
 											]
 										}
@@ -150,7 +159,8 @@ export default class ContactForm extends JetView {
 							view: "button",
 							label: "",
 							css: "button--style",
-							localId: "actionsButton"
+							localId: "actionsButton",
+							click: () => this.addEditContact()
 						}
 					]
 				}
@@ -161,41 +171,77 @@ export default class ContactForm extends JetView {
 
 	init() {
 		this.form = this.$$("contactForm");
-	}
+		this.contactPhoto = this.$$("contactPhoto");
+		const fileReader = new FileReader();
 
-	showContactForm(id) {
-		const self = this;
-		this.show("./contact-form").then(() => {
-			let state;
-			if (id && contacts.exists(id)) {
-				state = "Edit";
-				const item = webix.copy(contacts.getItem(id));
-				self.form.setValues(item);
-			}
-			else {
-				state = "Add";
-			}
-			self.$$("header").setValues({state});
-			self.$$("actionsButton").setValue(state);
+		this.$$("photoUploader").attachEvent("onBeforeFileAdd", (data) => {
+			fileReader.readAsDataURL(data.file);
+			fileReader.onload = () => this.contactPhoto.setValues({Photo: fileReader.result});
 		});
-		// function asd() {
-		// 	let state;
-		// 	debugger;
-		// 	if (id && contacts.exists(id)) {
-		// 		state = "Edit";
-		// 		const item = webix.copy(contacts.getItem(id));
-		// 		this.form.setValues([item]);
-		// 	} else {
-		// 		state = "Add";
-		// 	}
-		// 	self.$$("header").setValues({state});
-		// 	self.$$("actionsButton").setValue(state);
-		// }
 	}
 
-	closeForm() {
+	urlChange() {
+		const state = this.getParam("status");
+		if (state === "edit") {
+			const id = this.getParam("id", true);
+			this.showContactForm(state, id);
+		}
+		else {
+			this.showContactForm(state);
+		}
+	}
+
+	showContactForm(state, id) {
+		if (id && contacts.exists(id)) {
+			state = "Edit";
+			const item = webix.copy(contacts.getItem(id));
+			this.form.setValues(item);
+			this.contactPhoto.setValues({Photo: item.Photo});
+		}
+		else {
+			state = "Add";
+		}
+		this.$$("header").setValues({state});
+		this.$$("actionsButton").setValue(state);
+	}
+
+	closeForm(id) {
 		this.form.clear();
 		this.form.clearValidation();
-		this.show("./contact-info");
+		const status = this.getParam("status");
+		if (status === "edit") {
+			this.show("./contact-info");
+		}
+		else if (id) {
+			this.app.callEvent("showChoosenContactInfo", [id]);
+		}
+		else {
+			this.app.callEvent("showChoosenContactInfo", [contacts.getFirstId()]);
+		}
+	}
+
+	addEditContact() {
+		const data = this.form.getValues();
+		data.Photo = this.contactPhoto.getValues().Photo;
+		if (!this.form.validate()) {
+			webix.message({type: "error", text: "Please check fields"});
+			return;
+		}
+		contacts
+			.waitSave(() => {
+				if (data.id) {
+					contacts.updateItem(data.id, data);
+				}
+				else {
+					contacts.add(data, 0);
+				}
+			})
+			.then(() => {
+				this.closeForm();
+			});
+	}
+
+	deletePhoto() {
+		this.contactPhoto.setValues({Photo: ""});
 	}
 }

@@ -5,7 +5,7 @@ import {contacts} from "../models/contacts";
 
 import ActivityWindow from "./activity-window";
 
-export default class Activities extends JetView {
+export default class ActivitiesOfContact extends JetView {
 	config() {
 		const dataTable = {
 			view: "datatable",
@@ -56,13 +56,6 @@ export default class Activities extends JetView {
 					fillspace: true
 				},
 				{
-					id: "ContactID",
-					header: [{text: "Contact"}, {content: "selectFilter"}],
-					sort: "text",
-					collection: contacts,
-					adjust: true
-				},
-				{
 					header: "",
 					width: 60,
 					template: "<span class='edit-btn webix_icon wxi-pencil'></span>"
@@ -95,7 +88,7 @@ export default class Activities extends JetView {
 		};
 
 		const view = {
-			rows: [addButton, dataTable]
+			rows: [dataTable, addButton]
 		};
 
 		return view;
@@ -105,8 +98,17 @@ export default class Activities extends JetView {
 		this.table = this.$$("activitiesTable");
 		this.activityWindow = this.ui(ActivityWindow);
 		webix.promise.all([activities.waitData, activityType.waitData, contacts.waitData]).then(() => {
-			activities.data.filter();
 			this.table.sync(activities);
+		});
+	}
+
+	urlChange() {
+		webix.promise.all([activities.waitData, activityType.waitData, contacts.waitData]).then(() => {
+			const contactId = this.getParam("id", true).toString();
+			if (!contactId && !contacts.exists(contactId)) {
+				return;
+			}
+			activities.data.filter(item => item.ContactID.toString() === contactId);
 		});
 	}
 

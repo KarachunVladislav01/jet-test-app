@@ -1,70 +1,72 @@
 * {
-	margin: 0;
-	padding: 0;
-	margin-block-start: 0;
-	margin-block-end: 0;
+  margin: 0;
+  padding: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 html {
-	font-size: 10px;
+  font-size: 10px;
 }
 
 body {
-	font-size: 1.6rem;
+  font-size: 1.6rem;
 }
 
 .user-list--grid {
-	display: grid;
-	grid-template-columns: 1fr 4fr;
-	align-items: flex-end;
-	justify-items: center;
-	margin: 1rem 0 1rem 0;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  align-items: flex-end;
+  justify-items: center;
+  margin: 1rem 0 1rem 0;
 }
 
 .user-list--grid img {
-	display: grid;
-	align-self: flex-end;
-	margin: auto;
-	height: 6rem;
-	border-radius: 2rem;
+  display: grid;
+  align-self: flex-end;
+  margin: auto;
+  height: 6rem;
+  width: 6rem;
+  border-radius: 2rem;
 }
 
 .user-info--col {
-	display: grid;
-	margin-top: 1rem;
-	grid-template-rows: repeat(4, 1fr);
-	align-items: center;
+  display: grid;
+  margin-top: 1rem;
+  grid-template-rows: repeat(4, 1fr);
+  align-items: center;
 }
 .button--style .webix_button {
-	border-radius: 0.4rem;
-	background-color: #fff;
+  border-radius: 0.4rem;
+  background-color: #fff;
 }
 
 .contact-info--name {
-	display: grid;
-	align-items: center;
-	font-size: 2rem;
+  display: grid;
+  align-items: center;
+  font-size: 2rem;
 }
 
 .row--hover {
-	background-color: rgba(152, 247, 222, 0.15);
+  background-color: rgba(152, 247, 222, 0.15);
 }
 
 .user-info-grid {
-	display: grid;
-	grid-template-rows: 4rem 3fr 0.5fr;
+  display: grid;
+  grid-template-rows: 4rem 3fr 0.5fr;
 }
 
 .user-info-body-grid {
-	display: grid;
-	grid-template-columns: repeat(2, 20rem) 1fr;
+  display: grid;
+  grid-template-columns: repeat(2, 20rem) 1fr;
 }
 
 .user-info-photo img {
-	height: 18rem;
+  height: 18rem;
+  width: 18rem;
 }
 
 .user-info--status {
-	margin-left: 2rem;
-	text-align: end;
+  margin-left: 2rem;
+  text-align: end;
 }

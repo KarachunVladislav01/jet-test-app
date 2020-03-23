@@ -1,8 +1,11 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../models/contacts";
 import {statuses} from "../models/statuses";
+import {activities} from "../models/activities";
+import {files} from "../models/files";
 
-import ContactForm from "./contact-form";
+import ActivitiesOfContact from "./activities-of-contact";
+import FilesOfContact from "./files-of-contact";
 import noPhoto from "../assets/img/noPhoto.png";
 
 export default class ContactInfo extends JetView {
@@ -10,12 +13,17 @@ export default class ContactInfo extends JetView {
 		const _ = this.app.getService("locale")._;
 		const formButtons = {
 			cols: [
-				{view: "button", label: _("Delete"), css: "button--style"},
+				{
+					view: "button",
+					label: _("Delete"),
+					css: "button--style",
+					click: () => this.confirmDeleteContact()
+				},
 				{
 					view: "button",
 					label: _("Edit"),
 					css: "button--style",
-					click: () => this.showContactEdit()
+					click: () => this.app.callEvent("contactEdit")
 				}
 			]
 		};
@@ -61,35 +69,78 @@ export default class ContactInfo extends JetView {
 		</div>`
 		};
 
-		const view = {rows: [formButtons, userInfo]};
+		const bottomTabbar = {
+			rows: [
+				{
+					view: "tabbar",
+					localId: "contactsData",
+					value: "Activities",
+					options: [{value: "Activities"}, {value: "Files"}]
+				},
+				{
+					cells: [
+						{localId: "Activities", rows: [ActivitiesOfContact]},
+						{localId: "Files", rows: [FilesOfContact]}
+					]
+				}
+			]
+		};
+
+		const view = {rows: [formButtons, userInfo, bottomTabbar]};
 
 		return view;
 	}
 
 	init() {
 		this.info = this.$$("userInfo");
-		this.contactForm = this.ui(ContactForm);
-	}
-
-	showContactEdit() {
-		const id = this.getParam("id", true);
-		// this.show("./contact-form");
-		this.contactForm.showContactForm(id);
+		this.$$("contactsData").attachEvent("onChange", value => this.$$(value).show());
 	}
 
 	urlChange() {
 		const elementId = this.getParam("id", true);
 
 		statuses.waitData.then(() => {
-			if (contacts.exists(elementId)) {
-				const contact = webix.copy(contacts.getItem(elementId));
-				const statusId = contact.StatusID;
+			if (!contacts.exists(elementId)) {
+				return;
+			}
 
-				if (statuses.exists(statusId)) {
-					contact.Status = statuses.getItem(statusId).Value;
-				}
-				this.info.setValues(contact);
+			const contact = webix.copy(contacts.getItem(elementId));
+			const statusId = contact.StatusID;
+			contact.Birthday = webix.i18n.longDateFormatStr(contact.Birthday);
+			if (statuses.exists(statusId)) {
+				contact.Status = statuses.getItem(statusId).Value;
+			}
+			this.info.setValues(contact);
+		});
+	}
+
+	confirmDeleteContact() {
+		const id = this.getParam("id", true);
+		if (!id && !contacts.exists(id)) {
+			return;
+		}
+		this.webix
+			.confirm({
+				type: "confirm-warning",
+				text: "Are you sure?"
+			})
+			.then(() => {
+				this.deleteContact(id);
+			});
+	}
+
+	deleteContact(id) {
+		activities.serialize().forEach((item) => {
+			if (item.ContactID.toString() === id) {
+				activities.remove(item.id);
 			}
 		});
+		files.serialize().forEach((item) => {
+			if (item.ContactId.toString() === id) {
+				files.remove(item.id);
+			}
+		});
+		contacts.remove(id);
+		this.app.callEvent("showChoosenContactInfo", [contacts.getFirstId()]);
 	}
 }

@@ -29,6 +29,7 @@ export default class ActivityWindow extends JetView {
 					},
 					{
 						view: "combo",
+						localId: "contactsCombo",
 						label: "Contact",
 						name: "ContactID",
 						options: contacts,
@@ -91,6 +92,12 @@ export default class ActivityWindow extends JetView {
 
 	showModalWindow(id) {
 		let state;
+		const contactId = this.getParam("id", true);
+
+		if (contactId) {
+			this.$$("contactsCombo").setValue(contacts.getItem(contactId));
+			this.$$("contactsCombo").disable();
+		}
 		if (id && activities.exists(id)) {
 			state = "Edit";
 			const item = webix.copy(activities.getItem(id));
