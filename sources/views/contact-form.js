@@ -173,10 +173,10 @@ export default class ContactForm extends JetView {
 		this.form = this.$$("contactForm");
 		this.contactPhoto = this.$$("contactPhoto");
 		const fileReader = new FileReader();
+		fileReader.onload = () => this.contactPhoto.setValues({Photo: fileReader.result});
 
 		this.$$("photoUploader").attachEvent("onBeforeFileAdd", (data) => {
 			fileReader.readAsDataURL(data.file);
-			fileReader.onload = () => this.contactPhoto.setValues({Photo: fileReader.result});
 		});
 	}
 
@@ -193,13 +193,13 @@ export default class ContactForm extends JetView {
 
 	showContactForm(state, id) {
 		if (id && contacts.exists(id)) {
-			state = "Edit";
 			const item = webix.copy(contacts.getItem(id));
 			this.form.setValues(item);
 			this.contactPhoto.setValues({Photo: item.Photo});
 		}
 		else {
-			state = "Add";
+			this.form.clear();
+			this.form.clearValidation();
 		}
 		this.$$("header").setValues({state});
 		this.$$("actionsButton").setValue(state);

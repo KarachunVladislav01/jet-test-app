@@ -95,8 +95,9 @@ export default class ActivityWindow extends JetView {
 		const contactId = this.getParam("id", true);
 
 		if (contactId) {
-			this.$$("contactsCombo").setValue(contacts.getItem(contactId));
-			this.$$("contactsCombo").disable();
+			const contactsName = this.$$("contactsCombo");
+			contactsName.setValue(contacts.getItem(contactId));
+			contactsName.disable();
 		}
 		if (id && activities.exists(id)) {
 			state = "Edit";

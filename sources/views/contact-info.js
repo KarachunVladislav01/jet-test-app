@@ -130,17 +130,14 @@ export default class ContactInfo extends JetView {
 	}
 
 	deleteContact(id) {
-		activities.serialize().forEach((item) => {
-			if (item.ContactID.toString() === id) {
-				activities.remove(item.id);
-			}
-		});
-		files.serialize().forEach((item) => {
-			if (item.ContactId.toString() === id) {
-				files.remove(item.id);
-			}
-		});
+		const activitiesToRemove = activities.find(item => item.ContactID.toString() === id.toString());
+		activitiesToRemove.forEach(item => activities.remove(item.id));
+
+		const filesToRemove = files.find(item => item.ContactId.toString() === id.toString());
+		filesToRemove.forEach(item => files.remove(item.id));
+
 		contacts.remove(id);
+
 		this.app.callEvent("showChoosenContactInfo", [contacts.getFirstId()]);
 	}
 }
