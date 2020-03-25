@@ -1,5 +1,6 @@
 {
 	"jsxBracketSameLine": true,
 	"bracketSpacing": false,
-	"placeOpenBraceOnNewLineForControlBlocks": true
+	"placeOpenBraceOnNewLineForControlBlocks": true,
+	"arrowParens": "always"
 }
