@@ -131,10 +131,12 @@ export default class ContactInfo extends JetView {
 
 	deleteContact(id) {
 		const activitiesToRemove = activities.find(item => item.ContactID.toString() === id.toString());
-		activitiesToRemove.forEach(item => activities.remove(item.id));
+		const activitiesToRemoveIds = activitiesToRemove.map(item => item.id);
+		activities.remove(activitiesToRemoveIds);
 
 		const filesToRemove = files.find(item => item.ContactId.toString() === id.toString());
-		filesToRemove.forEach(item => files.remove(item.id));
+		const filesToRemoveIds = filesToRemove.map(item => item.id);
+		files.remove(filesToRemoveIds);
 
 		contacts.remove(id);
 

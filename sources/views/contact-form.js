@@ -192,6 +192,7 @@ export default class ContactForm extends JetView {
 	}
 
 	showContactForm(state, id) {
+		this.form.clearValidation();
 		if (id && contacts.exists(id)) {
 			const item = webix.copy(contacts.getItem(id));
 			this.form.setValues(item);
@@ -199,7 +200,6 @@ export default class ContactForm extends JetView {
 		}
 		else {
 			this.form.clear();
-			this.form.clearValidation();
 		}
 		this.$$("header").setValues({state});
 		this.$$("actionsButton").setValue(state);
@@ -208,11 +208,7 @@ export default class ContactForm extends JetView {
 	closeForm(id) {
 		this.form.clear();
 		this.form.clearValidation();
-		const status = this.getParam("status");
-		if (status === "edit") {
-			this.show("./contact-info");
-		}
-		else if (id) {
+		if (id) {
 			this.app.callEvent("showChoosenContactInfo", [id]);
 		}
 		else {
@@ -236,8 +232,8 @@ export default class ContactForm extends JetView {
 					contacts.add(data, 0);
 				}
 			})
-			.then(() => {
-				this.closeForm();
+			.then((res) => {
+				this.closeForm(res.id);
 			});
 	}
 
