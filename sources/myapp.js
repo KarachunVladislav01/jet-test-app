@@ -1,4 +1,4 @@
-import { JetApp, EmptyRouter, HashRouter, plugins } from "webix-jet";
+import {JetApp, EmptyRouter, HashRouter, plugins} from "webix-jet";
 import "./styles/app.css";
 
 export default class MyApp extends JetApp {
@@ -11,7 +11,7 @@ export default class MyApp extends JetApp {
 			start: "/side-menu/activities-table"
 		};
 
-		super({ ...defaults, ...config });
+		super({...defaults, ...config});
 	}
 }
 

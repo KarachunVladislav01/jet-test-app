@@ -1,4 +1,4 @@
-import { JetView, plugins } from "webix-jet";
+import {JetView, plugins} from "webix-jet";
 
 export default class SideMenu extends JetView {
 	config() {
@@ -16,11 +16,11 @@ export default class SideMenu extends JetView {
 			select: true,
 			layout: "y",
 			template: "<span class='webix_icon #icon#'></span> #value# ",
-			type: { width: 160 },
+			type: {width: 160},
 			data: [
-				{ value: _("Contacts"), id: "contacts", icon: "wxi-user" },
-				{ value: _("Activities"), id: "activities-table", icon: "wxi-folder" },
-				{ value: _("Settings"), id: "settings", icon: "wxi-dots" }
+				{value: _("Contacts"), id: "contacts", icon: "wxi-user"},
+				{value: _("Activities"), id: "activities-table", icon: "wxi-folder"},
+				{value: _("Settings"), id: "settings", icon: "wxi-dots"}
 			]
 		};
 
@@ -31,16 +31,14 @@ export default class SideMenu extends JetView {
 			rows: [
 				header,
 				{
-					cols: [
-						sideMenu,
-						{ type: "wide", paddingY: 10, paddingX: 5, rows: [{ $subview: true }] }
-					]
+					cols: [sideMenu, {type: "wide", paddingY: 10, paddingX: 5, rows: [{$subview: true}]}]
 				}
 			]
 		};
 
 		return view;
 	}
+
 	init() {
 		this.use(plugins.Menu, "menu");
 	}
