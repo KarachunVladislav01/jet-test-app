@@ -5,6 +5,7 @@ import {contacts} from "../models/contacts";
 
 export default class ActivityWindow extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		const view = {
 			view: "window",
 			modal: true,
@@ -18,10 +19,10 @@ export default class ActivityWindow extends JetView {
 				view: "form",
 				localId: "activityForm",
 				elements: [
-					{view: "textarea", label: "Details", name: "Details"},
+					{view: "textarea", label: _("Details"), name: "Details"},
 					{
 						view: "combo",
-						label: "Type",
+						label: _("Type"),
 						name: "TypeID",
 						options: activityType,
 						validate: webix.rules.isNotEmpty,
@@ -30,7 +31,7 @@ export default class ActivityWindow extends JetView {
 					{
 						view: "combo",
 						localId: "contactsCombo",
-						label: "Contact",
+						label: _("Contact"),
 						name: "ContactID",
 						options: contacts,
 						validate: webix.rules.isNotEmpty,
@@ -57,7 +58,7 @@ export default class ActivityWindow extends JetView {
 					},
 					{
 						view: "checkbox",
-						label: "Completed",
+						label: _("Completed"),
 						name: "State",
 						checkValue: "Close",
 						uncheckValue: "Open"

@@ -4,6 +4,7 @@ import {files} from "../models/files";
 
 export default class FilesOfContact extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		const dataTable = {
 			view: "datatable",
 			localId: "filesTable",
@@ -12,21 +13,21 @@ export default class FilesOfContact extends JetView {
 			columns: [
 				{
 					id: "name",
-					header: "Name",
+					header: _("Name"),
 					sort: "text",
 					adjust: true,
 					fillspace: true
 				},
 				{
 					id: "modificationDate",
-					header: "Change date",
+					header: _("Change date"),
 					sort: "date",
 					format: webix.i18n.longDateFormatStr,
 					adjust: true
 				},
 				{
 					id: "sizeText",
-					header: "Size",
+					header: _("Size"),
 					sort: this.sortBySize,
 					adjust: true
 				},

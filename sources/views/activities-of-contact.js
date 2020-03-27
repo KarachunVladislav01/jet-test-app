@@ -7,6 +7,7 @@ import ActivityWindow from "./activity-window";
 
 export default class ActivitiesOfContact extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		const dataTable = {
 			view: "datatable",
 			localId: "activitiesTable",
@@ -23,7 +24,7 @@ export default class ActivitiesOfContact extends JetView {
 				},
 				{
 					id: "TypeID",
-					header: [{text: "Activity type"}, {content: "selectFilter"}],
+					header: [{text: _("Activity Types")}, {content: "selectFilter"}],
 					sort: "text",
 					collection: activityType,
 					adjust: true
@@ -31,7 +32,7 @@ export default class ActivitiesOfContact extends JetView {
 				{
 					id: "DueDate",
 					header: [
-						{text: "Due date"},
+						{text: _("Due date")},
 						{
 							content: "datepickerFilter",
 							compare(cellValue, filterValue) {
@@ -50,7 +51,7 @@ export default class ActivitiesOfContact extends JetView {
 				},
 				{
 					id: "Details",
-					header: [{text: "Details"}, {content: "textFilter"}],
+					header: [{text: _("Details")}, {content: "textFilter"}],
 					sort: "string",
 					adjust: true,
 					fillspace: true
@@ -79,7 +80,7 @@ export default class ActivitiesOfContact extends JetView {
 					view: "button",
 					width: 200,
 					css: "button--style",
-					label: "Add activity",
+					label: _("Add activity"),
 					type: "icon",
 					icon: "wxi-plus-circle",
 					click: () => this.showAddModal()

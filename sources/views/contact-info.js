@@ -75,12 +75,15 @@ export default class ContactInfo extends JetView {
 					view: "tabbar",
 					localId: "contactsData",
 					value: "Activities",
-					options: [{value: "Activities"}, {value: "Files"}]
+					options: [
+						{value: _("Activities"), id: "activities"},
+						{value: _("Files"), id: "files"}
+					]
 				},
 				{
 					cells: [
-						{localId: "Activities", rows: [ActivitiesOfContact]},
-						{localId: "Files", rows: [FilesOfContact]}
+						{localId: "activities", rows: [ActivitiesOfContact]},
+						{localId: "files", rows: [FilesOfContact]}
 					]
 				}
 			]
@@ -130,7 +133,9 @@ export default class ContactInfo extends JetView {
 	}
 
 	deleteContact(id) {
-		const activitiesToRemove = activities.find(item => item.ContactID.toString() === id.toString());
+		const activitiesToRemove = activities.find(
+			item => item.ContactID.toString() === id.toString()
+		);
 		const activitiesToRemoveIds = activitiesToRemove.map(item => item.id);
 		activities.remove(activitiesToRemoveIds);
 

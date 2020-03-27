@@ -5,6 +5,7 @@ import noPhoto from "../assets/img/noPhoto.png";
 
 export default class Contact extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		const usersList = {
 			view: "list",
 			localId: "userList",
@@ -22,16 +23,22 @@ export default class Contact extends JetView {
 			}
 		};
 
+		const usersFilter = {
+			view: "text",
+			localId: "usersFilter",
+			on: {onTimedKeyPress: () => this.usersFiltration()}
+		};
+
 		const addButton = {
 			view: "button",
-			label: "Add contact",
+			label: _("Add contact"),
 			css: "button--style",
 			click: () => this.show("./contact-form?status=add")
 		};
 
 		const view = {
 			margin: 20,
-			cols: [{rows: [usersList, addButton]}, {$subview: true}]
+			cols: [{rows: [usersFilter, usersList, addButton]}, {$subview: true}]
 		};
 		return view;
 	}
@@ -58,5 +65,14 @@ export default class Contact extends JetView {
 			}
 			this.app.callEvent("showChoosenContactInfo", [id]);
 		});
+	}
+
+	usersFiltration() {
+		const filterArg = this.$$("usersFilter")
+			.getValue()
+			.toLowerCase();
+		this.list.filter(obj => obj.value.toLowerCase().indexOf(filterArg) !== -1 ||
+				obj.Company.toLowerCase().indexOf(filterArg) !== -1 ||
+				obj.Job.toLowerCase().indexOf(filterArg) !== -1);
 	}
 }
