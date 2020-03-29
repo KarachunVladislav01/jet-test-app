@@ -27,6 +27,10 @@ export default class Activities extends JetView {
 					header: [{text: "Activity Types"}, {content: "selectFilter"}],
 					sort: "text",
 					collection: activityType,
+					template: (obj) => {
+						const item = activityType.getItem(obj.TypeID);
+						return `<div class="activity--flex">${item.Value} <span class="mdi mdi-${item.Icon}"></span></div>`;
+					},
 					adjust: true
 				},
 				{
@@ -128,7 +132,9 @@ export default class Activities extends JetView {
 
 		webix.promise.all([activities.waitData, activityType.waitData, contacts.waitData]).then(() => {
 			activities.data.filter();
-			this.table.sync(activities);
+			this.table.sync(activities, () => {
+				this.table.filterByAll();
+			});
 		});
 
 		this.table.registerFilter(

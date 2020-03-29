@@ -24,9 +24,14 @@ export default class ActivitiesOfContact extends JetView {
 				},
 				{
 					id: "TypeID",
-					header: [{text: _("Activity Types")}, {content: "selectFilter"}],
+					header: [{text: _("Activity Types")}, {content: "richSelectFilter"}],
 					sort: "text",
-					collection: activityType,
+					template: (obj) => {
+						const item = activityType.getItem(obj.TypeID);
+						return `<div class="activity--flex">${item.Value} <span class="mdi mdi-${item.Icon}"></span></div>`;
+					},
+
+					options: activityType,
 					adjust: true
 				},
 				{

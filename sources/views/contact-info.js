@@ -64,7 +64,10 @@ export default class ContactInfo extends JetView {
 					</div>
 				</div>
 			</div>
-			<div><span class="user-info--status">${contact.Status || "no data"}</span></div>
+			<div>
+			<span class="user-info--status">${contact.Status || "no data"}</span>
+			<span class='mdi mdi-${contact.Icon}'></span>
+			</div>
 		</div>
 		</div>`
 		};
@@ -112,6 +115,7 @@ export default class ContactInfo extends JetView {
 			contact.Birthday = webix.i18n.longDateFormatStr(contact.Birthday);
 			if (statuses.exists(statusId)) {
 				contact.Status = statuses.getItem(statusId).Value;
+				contact.Icon = statuses.getItem(statusId).Icon;
 			}
 			this.info.setValues(contact);
 		});

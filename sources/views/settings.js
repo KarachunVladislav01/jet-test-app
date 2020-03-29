@@ -31,7 +31,7 @@ export default class Settings extends JetView {
 				{
 					view: "tabbar",
 					localId: "settingTabbar",
-					value: _("Activity-Types"),
+					value: _("ActivityTypes"),
 					options: [
 						{value: _("Activity Types"), id: "ActivityTypes"},
 						{value: _("Statuses"), id: "Statuses"}
