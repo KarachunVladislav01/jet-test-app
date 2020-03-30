@@ -178,10 +178,10 @@ export default class Activities extends JetView {
 					item.DueDate < webix.Date.add(webix.Date.monthStart(now), 1, "month", true)
 				);
 			case "all":
-				return state;
+				return true;
 			default:
 				webix.message({type: "error", text: "No filter"});
-				return state;
+				return true;
 		}
 	}
 
