@@ -6,6 +6,7 @@ import noPhoto from "../assets/img/noPhoto.png";
 
 export default class ContactForm extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		const form = {
 			view: "form",
 			localId: "contactForm",
@@ -25,21 +26,21 @@ export default class ContactForm extends JetView {
 							rows: [
 								{
 									view: "text",
-									label: "First name",
+									label: _("First name"),
 									name: "FirstName",
 									validate: webix.rules.isNotEmpty,
 									invalidMessage: "Can not be empty"
 								},
 								{
 									view: "text",
-									label: "Last name",
+									label: _("Last name"),
 									name: "LastName",
 									validate: webix.rules.isNotEmpty,
 									invalidMessage: "Can not be empty"
 								},
 								{
 									view: "datepicker",
-									label: "Joining date",
+									label: _("Joining date"),
 									name: "StartDate",
 									format: webix.i18n.longDateFormatStr,
 									validate: webix.rules.isNotEmpty,
@@ -47,7 +48,7 @@ export default class ContactForm extends JetView {
 								},
 								{
 									view: "combo",
-									label: "Status",
+									label: _("Status"),
 									name: "StatusID",
 									options: statuses,
 									validate: webix.rules.isNotEmpty,
@@ -55,28 +56,28 @@ export default class ContactForm extends JetView {
 								},
 								{
 									view: "text",
-									label: "Job",
+									label: _("Job"),
 									name: "Job",
 									validate: webix.rules.isNotEmpty,
 									invalidMessage: "Can not be empty"
 								},
 								{
 									view: "text",
-									label: "Company",
+									label: _("Company"),
 									name: "Company",
 									validate: webix.rules.isNotEmpty,
 									invalidMessage: "Can not be empty"
 								},
 								{
 									view: "text",
-									label: "Website",
+									label: _("Website"),
 									name: "Website",
 									validate: webix.rules.isNotEmpty,
 									invalidMessage: "Can not be empty"
 								},
 								{
 									view: "text",
-									label: "Address",
+									label: _("Address"),
 									name: "Address",
 									validate: webix.rules.isNotEmpty,
 									invalidMessage: "Can not be empty"
@@ -88,28 +89,28 @@ export default class ContactForm extends JetView {
 							rows: [
 								{
 									view: "text",
-									label: "Email",
+									label: _("Email"),
 									name: "Email",
 									validate: webix.rules.isNotEmpty,
 									invalidMessage: "Can not be empty"
 								},
 								{
 									view: "text",
-									label: "Skype",
+									label: _("Skype"),
 									name: "Skype",
 									validate: webix.rules.isNotEmpty,
 									invalidMessage: "Can not be empty"
 								},
 								{
 									view: "text",
-									label: "Phone",
+									label: _("Phone"),
 									name: "Phone",
 									validate: webix.rules.isNotEmpty,
 									invalidMessage: "Can not be empty"
 								},
 								{
 									view: "datepicker",
-									label: "Birthday",
+									label: _("Birthday"),
 									name: "Birthday",
 									format: webix.i18n.longDateFormatStr,
 									validate: webix.rules.isNotEmpty,
@@ -132,14 +133,14 @@ export default class ContactForm extends JetView {
 												{
 													view: "uploader",
 													localId: "photoUploader",
-													label: "Change photo",
+													label: _("Change photo"),
 													accept: "image/png, image/jpg, image/jpeg",
 													autosend: false,
 													css: "button--style"
 												},
 												{
 													view: "button",
-													label: "Delete photo",
+													label: _("Delete photo"),
 													css: "button--style",
 													click: () => this.deletePhoto()
 												}
@@ -154,7 +155,12 @@ export default class ContactForm extends JetView {
 				{},
 				{
 					cols: [
-						{view: "button", label: "Cancel", css: "button--style", click: () => this.closeForm()},
+						{
+							view: "button",
+							label: _("Cancel"),
+							css: "button--style",
+							click: () => this.closeForm()
+						},
 						{
 							view: "button",
 							label: "",

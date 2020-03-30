@@ -70,3 +70,8 @@ body {
   margin-left: 2rem;
   text-align: end;
 }
+
+.activity--flex {
+  display: flex;
+  justify-content: space-between;
+}

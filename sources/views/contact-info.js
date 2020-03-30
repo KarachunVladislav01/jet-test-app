@@ -64,7 +64,10 @@ export default class ContactInfo extends JetView {
 					</div>
 				</div>
 			</div>
-			<div><span class="user-info--status">${contact.Status || "no data"}</span></div>
+			<div>
+			<span class="user-info--status">${contact.Status || "no data"}</span>
+			<span class='mdi mdi-${contact.Icon}'></span>
+			</div>
 		</div>
 		</div>`
 		};
@@ -75,12 +78,15 @@ export default class ContactInfo extends JetView {
 					view: "tabbar",
 					localId: "contactsData",
 					value: "Activities",
-					options: [{value: "Activities"}, {value: "Files"}]
+					options: [
+						{value: _("Activities"), id: "activities"},
+						{value: _("Files"), id: "files"}
+					]
 				},
 				{
 					cells: [
-						{localId: "Activities", rows: [ActivitiesOfContact]},
-						{localId: "Files", rows: [FilesOfContact]}
+						{localId: "activities", rows: [ActivitiesOfContact]},
+						{localId: "files", rows: [FilesOfContact]}
 					]
 				}
 			]
@@ -109,6 +115,7 @@ export default class ContactInfo extends JetView {
 			contact.Birthday = webix.i18n.longDateFormatStr(contact.Birthday);
 			if (statuses.exists(statusId)) {
 				contact.Status = statuses.getItem(statusId).Value;
+				contact.Icon = statuses.getItem(statusId).Icon;
 			}
 			this.info.setValues(contact);
 		});
@@ -130,7 +137,9 @@ export default class ContactInfo extends JetView {
 	}
 
 	deleteContact(id) {
-		const activitiesToRemove = activities.find(item => item.ContactID.toString() === id.toString());
+		const activitiesToRemove = activities.find(
+			item => item.ContactID.toString() === id.toString()
+		);
 		const activitiesToRemoveIds = activitiesToRemove.map(item => item.id);
 		activities.remove(activitiesToRemoveIds);
 

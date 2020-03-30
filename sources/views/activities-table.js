@@ -7,6 +7,7 @@ import ActivityWindow from "./activity-window";
 
 export default class Activities extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		const dataTable = {
 			view: "datatable",
 			localId: "activitiesTable",
@@ -23,15 +24,19 @@ export default class Activities extends JetView {
 				},
 				{
 					id: "TypeID",
-					header: [{text: "Activity type"}, {content: "selectFilter"}],
+					header: [{text: "Activity Types"}, {content: "selectFilter"}],
 					sort: "text",
 					collection: activityType,
+					template: (obj) => {
+						const item = activityType.getItem(obj.TypeID);
+						return `<div class="activity--flex">${item.Value} <span class="mdi mdi-${item.Icon}"></span></div>`;
+					},
 					adjust: true
 				},
 				{
 					id: "DueDate",
 					header: [
-						{text: "Due date"},
+						{text: _("Due date")},
 						{
 							content: "datepickerFilter",
 							compare(cellValue, filterValue) {
@@ -50,14 +55,14 @@ export default class Activities extends JetView {
 				},
 				{
 					id: "Details",
-					header: [{text: "Details"}, {content: "textFilter"}],
+					header: [{text: _("Details")}, {content: "textFilter"}],
 					sort: "string",
 					adjust: true,
 					fillspace: true
 				},
 				{
 					id: "ContactID",
-					header: [{text: "Contact"}, {content: "selectFilter"}],
+					header: [{text: _("Contact")}, {content: "selectFilter"}],
 					sort: "text",
 					collection: contacts,
 					adjust: true
@@ -86,7 +91,7 @@ export default class Activities extends JetView {
 					view: "button",
 					width: 200,
 					css: "button--style",
-					label: "Add activity",
+					label: _("Add activity"),
 					type: "icon",
 					icon: "wxi-plus-circle",
 					click: () => this.showAddModal()
@@ -94,8 +99,28 @@ export default class Activities extends JetView {
 			]
 		};
 
+		const filtersOptions = {
+			view: "tabbar",
+			localId: "activitiesFilters",
+			value: "all",
+			options: [
+				{id: "all", value: _("All")},
+				{id: "overdue", value: _("Overdue")},
+				{id: "completed", value: _("Completed")},
+				{id: "today", value: _("Today")},
+				{id: "tomorrow", value: _("Tomorrow")},
+				{id: "thisWeek", value: _("This week")},
+				{id: "thisMonth", value: _("This month")}
+			],
+			on: {
+				onChange: () => {
+					this.$$("activitiesTable").filterByAll();
+				}
+			}
+		};
+
 		const view = {
-			rows: [addButton, dataTable]
+			rows: [filtersOptions, dataTable, addButton]
 		};
 
 		return view;
@@ -104,10 +129,60 @@ export default class Activities extends JetView {
 	init() {
 		this.table = this.$$("activitiesTable");
 		this.activityWindow = this.ui(ActivityWindow);
+
 		webix.promise.all([activities.waitData, activityType.waitData, contacts.waitData]).then(() => {
 			activities.data.filter();
-			this.table.sync(activities);
+			this.table.sync(activities, () => {
+				this.table.filterByAll();
+			});
 		});
+
+		this.table.registerFilter(
+			this.$$("activitiesFilters"),
+			{
+				columnId: "State",
+				compare: (value, filter, item) => this.activitiesFiltration(value, filter, item)
+			},
+			{
+				getValue: node => node.getValue(),
+				setValue: (node, value) => node.setValue(value)
+			}
+		);
+	}
+
+	activitiesFiltration(state, filter, item) {
+		const now = new Date();
+		switch (filter) {
+			case "overdue":
+				return item.DueDate < now && state === "Open";
+			case "completed":
+				return state === "Close";
+			case "today":
+				return webix.Date.equal(
+					webix.Date.datePart(now, true),
+					webix.Date.datePart(item.DueDate, true)
+				);
+			case "tomorrow":
+				return webix.Date.equal(
+					webix.Date.datePart(webix.Date.add(now, 1, "day", true), true),
+					webix.Date.datePart(item.DueDate, true)
+				);
+			case "thisWeek":
+				return (
+					webix.Date.weekStart(now) < item.DueDate &&
+					item.DueDate < webix.Date.add(webix.Date.weekStart(now), 8, "day", true)
+				);
+			case "thisMonth":
+				return (
+					webix.Date.monthStart(now) < item.DueDate &&
+					item.DueDate < webix.Date.add(webix.Date.monthStart(now), 1, "month", true)
+				);
+			case "all":
+				return true;
+			default:
+				webix.message({type: "error", text: "No filter"});
+				return true;
+		}
 	}
 
 	showEditModal(id) {
